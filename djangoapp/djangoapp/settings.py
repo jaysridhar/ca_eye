@@ -26,7 +26,7 @@ Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('Environment') == 'production'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': env('DBNAME'),
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASSWD'),
-        'HOST': '127.0.0.1',
+        'HOST': env('DBHOST'),
         'PORT': 3306
     }
 }

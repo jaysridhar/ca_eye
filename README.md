@@ -1,5 +1,35 @@
 ## TheEye Django Application
 
+The application is a Django application which uses a MySQL database
+for storing the events. The events are stored in a background worker
+based on Celery with a RabbitMQ server. The storage routine dispatches
+the event to the Celery worker and returns a response immediately to
+the client. This helps the application handle many clients
+simultaneously.
+
+I also have implemented a python client for logging events. Also
+included in the application is a front-end dashboard application which
+helps the admin team manage the events, search through them and also
+delete events.
+
+Only trusted clients can log events. Trust is established through
+Token authentication which is generated per registered user. Tokens
+can be generated through the Django admin interface at `/admin`. (Due
+to insufficient time, I did not implement token generation in the
+dashboard application).
+
+Validation of events by category is implemented in the Celery task
+file `tasks.py`. I have added stubs for these since information about
+what constitutes a valid event is missing. The application does,
+however, check for invalid timestamps in the future and marks it as
+such. This can be viewed from the dashboard.
+
+The whole thing took me about 6 hours, but I have made the application
+as thorough as I can. Due to running out of time, I could not finish
+an AWS Cloudformation stack description.
+
+## Django Template
+
 I have used a Django template that I have prepared myself. I use this
 template in most projects that I start from scratch. It provides the
 following features.
@@ -66,6 +96,21 @@ Start the server. This runs the server in development mode on port
 python manage.py runserver
 ```
 
+Start the celery worker as follows. A `Makefile` is included for
+convenience.
+
+```shell
+make runcelery
+```
+
+Build the front-end application. It uses `npm` and `rollup`.
+
+```shell
+cd eye/rollup
+npm install
+make watch
+```
+
 ## Serving the application
 
 To serve the application, you can setup an NGINX server as follows:
@@ -101,7 +146,7 @@ server {
         index index.html;
         server_name _;
         location = /favicon.ico { access_log off; log_not_found off; }
-        location /assets/ { root /opt/theeye/djangoapp/; }
+        location /assets { root /opt/theeye/djangoapp/; }
         location / {
                 proxy_pass http://127.0.0.1:8000/;
                 proxy_set_header X-Forwarded-Host $host;
