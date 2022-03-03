@@ -130,3 +130,12 @@ Here are some notes about the application, assumptions, etc.
 * I have added stubs for event validation in `tasks.py`. However since
   event validation rules are unknown at this time, the rules are
   empty.
+
+* I have configured the django admin site at `/admin`. I normally
+  remove it since the same facilities are provided in the dashboard
+  with more validation rules, but for this application, I figured it
+  convenient to leave it in.
+
+* I have made arrangements for the queries on `session`, `category`
+  and `timestamp` to be fast by adding indexes on these fields, but
+  could not test it due to lack of data.
