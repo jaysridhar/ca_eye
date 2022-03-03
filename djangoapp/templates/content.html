@@ -1,1 +1,60 @@
-main content here.
+<div class="row">
+  <div class="col-10 offset-1">
+    <ul class="nav nav-tabs nav-fill pt-4"
+	id="myTab">
+      <li class="nav-item">
+	<a class="nav-link active"
+	   id="new-tab"
+	   data-toggle="tab"
+	   href="#tab-events">Normal Events</a>
+      </li>
+      <li class="nav-item">
+	<a class="nav-link"
+	   id="approved-tab"
+	   data-toggle="tab"
+	   href="#tab-errors">Error Events</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTab-content">
+      <div class="tab-pane fade show active"
+	   id="tab-events" >
+	<div id="events-toolbar" class="d-flex">
+	  <button class="delete delete-btn btn btn-danger" disabled>
+	    <i class="fas fa-times"></i> Delete
+	  </button>
+	</div>
+	<table id="events-table"
+	       data-toolbar="#events-toolbar"
+	       class="table table-bordered table-striped"></table>
+      </div>
+      <div class="tab-pane fade"
+	   id="tab-errors">
+	<div id="errors-toolbar" class="d-flex">
+	  <button class="delete delete-btn btn btn-danger" disabled>
+	    <i class="fas fa-times"></i> Delete
+	  </button>
+	</div>
+	<table id="errors-table"
+	       data-toolbar="#errors-toolbar"
+	       class="table table-bordered table-striped"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%load static%}
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{%static 'lib/jquery-3.5.1.min.js'%}"></script>
+<script src="{%static 'lib/nunjucks.min.js'%}"></script>
+<script src="{%static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<script src="{%static 'bootstrap-table/bootstrap-table.js'%}"></script>
+<script src="{%static 'bootstrap-table/extensions/cookie/bootstrap-table-cookie.js'%}"></script>
+<script src="{%static 'bootstrap-table/extensions/multiple-sort/bootstrap-table-multiple-sort.js'%}"></script>
+<script src="{%static 'jQuery-contextMenu/jquery.contextMenu.min.js'%}"></script>
+<script src="{%static 'jQuery-contextMenu/jquery.ui.position.min.js'%}"></script>
+<script src="{%static 'sweetalert2/sweetalert2.all.min.js'%}"></script>
+<script src="{%static 'jquery-ui/jquery-ui.min.js'%}"></script>
+<script src="{%static 'sprintf.js/sprintf.min.js'%}"></script>
+<script src="/assets/js/bundle.app.js?t={% now 'U'%}"></script>

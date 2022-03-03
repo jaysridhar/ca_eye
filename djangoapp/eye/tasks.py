@@ -13,11 +13,14 @@ warning = logger.warning
 @shared_task
 def save_event(event_data):
     try:
+        timestamp = datetime.datetime.strptime(event_data['timestamp'],'%Y-%m-%d %H:%M:%S.%f')
+        error = 'future timestamp' if timestamp > datetime.datetime.now() else None
         event = Event(session_id = event_data['session_id'],
                       category = event_data['category'],
                       name = event_data['name'],
                       data = json.dumps(event_data['data']),
-                      timestamp = datetime.datetime.strptime(event_data['timestamp'],'%Y-%m-%d %H:%M:%S.%f'))
+                      error_mesg = error,
+                      timestamp = timestamp)
         event.save()
         return {'success': model_to_dict(event)}
     except Exception as ex:
