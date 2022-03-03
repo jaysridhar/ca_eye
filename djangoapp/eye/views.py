@@ -5,4 +5,7 @@ def index(request):
     return render(request, 'base_home.html', {'user': request.user})
 
 def manage_event(request):
-    return HttpResponse('ok')
+    if request.method == 'POST':
+        pass
+    else:
+        return HttpResponseNotAllowed(f'method "{request.method}" not allowed')

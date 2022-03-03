@@ -1,9 +1,11 @@
 import logging
-from django.http import HttpResponseNotAllowed, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
 from djangoapp.serializers import UserSerializer
 
 L = logging.getLogger(__name__)
@@ -45,3 +47,8 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
+
+@login_required
+def get_auth_token(request):
+    return HttpResponse(str(Token.objects.get_or_create(user=request.user)[0]))
+
