@@ -42,12 +42,18 @@ pip install -r requirements.txt
 ```
 
 Change directory to the `djangoapp` directory and run the
-migrations. Start the server too. This runs the server in development
-mode on port 8000 on the local machine.
+migrations. Create a super user by following the prompts.
 
 ```shell
 cd djangoapp
 python manage.py migrate
+python manage.py createsuperuser
+```
+
+Start the server. This runs the server in development mode on port
+8000 on the local machine.
+
+```shell
 python manage.py runserver
 ```
 
