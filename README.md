@@ -122,3 +122,11 @@ Create the required `dhparam.pem` using the following command:
 ```shell
 openssl dhparam -out /etc/nginx/dhparam.pem 2048
 ```
+
+## The Application
+
+Here are some notes about the application, assumptions, etc.
+
+* I have added stubs for event validation in `tasks.py`. However since
+  event validation rules are unknown at this time, the rules are
+  empty.

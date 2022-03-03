@@ -29,6 +29,9 @@ function buildColumns($tableEl, titlesArr)
 		     title: 'Data',
 		     formatter: dataFormatter,
 		     sortable: true },
+		   { field: 'error_mesg',
+		     title: 'Error',
+		     sortable: true },
 		   { field: 'timestamp',
 		     title: 'Timestamp',
 		     formatter: dateFormatter,
@@ -54,10 +57,10 @@ function make_load_complete($tableEl)
     }
 }
 
-function setupNormal()
+function setupNormal(titlesArr)
 {
     let $tableEl = $('#events-table');
-    let columns = buildColumns($tableEl),
+    let columns = buildColumns($tableEl, titlesArr),
 	deleteBtn = () => $('.delete-btn').prop('disabled', $tableEl.bootstrapTable('getSelections').length == 0),
 	changeBtnState = row => deleteBtn();;
     $tableEl.bootstrapTable({
@@ -86,10 +89,10 @@ function setupNormal()
     })
 }
 
-function setupError()
+function setupError(titlesArr)
 {
     let $tableEl = $('#errors-table');
-    let columns = buildColumns($tableEl),
+    let columns = buildColumns($tableEl, titlesArr),
 	updateBtn = () => $('.approved-btn').prop('disabled', $tableEl.bootstrapTable('getSelections').length == 0),
 	changeBtnState = row => updateBtn();
     $tableEl.bootstrapTable({
@@ -148,8 +151,8 @@ function deleteFn(ev, $modal)
 }
 
 $(function() {
-    setupNormal();
-    setupError();
+    setupNormal(['ID', 'Session', 'Category', 'Name', 'Date', 'Timestamp']);
+    setupError(['ID', 'Session', 'Category', 'Name', 'Date', 'Error', 'Timestamp']);
 
     $('.delete-btn').click(ev => {
 	let $tableEl = $($(ev.target).closest('div.tab-pane').find('table.table')),
