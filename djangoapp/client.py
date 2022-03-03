@@ -29,7 +29,7 @@ elif args.action == 'session':
     print(f'Session ID: {str(uuid.uuid1())}')
 elif args.action == 'register':
     payload = args.payload
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+    timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
     if payload.startswith('@'):
         with open(payload[1:]) as fp: payload = fp.read()
     obj = json.loads(payload)
