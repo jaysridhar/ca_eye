@@ -21,7 +21,6 @@ class EventView(APIView):
                 else: q = Q(**{f'{name}__icontains': value})
             return q
         start = time.perf_counter_ns()
-        print(f'events(): {request.GET}')
         ser = EventSerializer
         error = request.GET['error'] if 'error' in request.GET else None
         if error:
@@ -48,14 +47,12 @@ class EventView(APIView):
             direction = request.GET['order'] if 'order' in request.GET and request.GET['order'] else 'asc'
             direction = '' if direction == 'asc' else '-'
             sortCondition = f'{direction}{sortBy}'
-            print(f'Sort Condition: "{sortCondition}"')
             qs = qs.order_by(sortCondition)
         if 'offset' in request.GET and 'limit' in request.GET:
             count = qs.count()
             offset = int(request.GET['offset'])
             limit = int(request.GET['limit'])
             qs = qs[offset:offset+limit]
-            print(f'{error}, {offset}, {limit}: found {qs.count()} rows')
             resp = JsonResponse({
                 'rows': ser(qs, many=True).data,
                 'total': count

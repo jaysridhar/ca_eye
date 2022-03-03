@@ -38,11 +38,12 @@ def save_event(event_data):
         else:
             res = validators['unknown'](event_data)
             if res: errors.append(res)
+        error = ','.join(errors) if errors else None
         event = Event(session_id = event_data['session_id'],
                       category = event_data['category'],
                       name = event_data['name'],
                       data = json.dumps(event_data['data']),
-                      error_mesg = ','.join(errors),
+                      error_mesg = error,
                       timestamp = timestamp)
         event.save()
         return {'success': model_to_dict(event)}
