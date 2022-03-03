@@ -51,4 +51,3 @@ def logout_user(request):
 @login_required
 def get_auth_token(request):
     return HttpResponse(str(Token.objects.get_or_create(user=request.user)[0]))
-

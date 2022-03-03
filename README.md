@@ -20,6 +20,15 @@ following features.
   the application is disabled. The `.env` file is owned by this user
   and is readable only by that user (and `root` of course).
 
+## Install pre-requisites
+
+The application requires MySQL and RabbitMQ server. Install them (on
+Ubuntu):
+
+```shell
+apt install mysql-server rabbitmq-server
+```
+
 ## Running the application
 
 The application has been configured to use a MySQL database. Setting

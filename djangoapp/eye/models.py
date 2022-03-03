@@ -10,3 +10,6 @@ class Event(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table = 'event'
+        indexes = [models.Index(fields=['session_id']),
+                   models.Index(fields=['category']),
+                   models.Index(fields=['timestamp'])]

@@ -7,3 +7,4 @@ mysql-connector
 django-environ
 mysql-connector
 mysqlclient
+celery
