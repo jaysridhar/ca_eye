@@ -1,6 +1,6 @@
 import json, time
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, QueryDict
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from eye.tasks import save_event
@@ -71,7 +71,14 @@ class EventView(APIView):
         if len(request.body.strip()) == 0:
             return HttpResponseBadRequest('no body content - must include JSON of event')
         event_data = json.loads(request.body)
-        print(f'event_data = {event_data}')
         save_event.apply_async((event_data,), countdown=2)
-        print('dispatched to save_event()')
         return HttpResponse('ok')
+
+    def delete(self, request):
+        id_arr = json.loads(request.body)
+        count = 0
+        for eid in id_arr:
+            event = Event.objects.get(pk=eid)
+            event.delete()
+            count += 1
+        return HttpResponse(f'deleted {count} event(s)')

@@ -47,9 +47,7 @@ function make_load_complete($tableEl)
 	let $tabPane = $tableEl.closest('div.tab-pane'),
 	    paneId = $tabPane.prop('id'),
 	    $tabEl = $tabPane.closest('div.tab-content').prev('.nav-tabs').find(`a[href="#${paneId}"]`);
-	console.log('$tableEl = %O, paneId = %O, $tabEl = %O', $tableEl, paneId, $tabEl);
 	$tabEl.find('div.spin').remove();
-	console.log('param = %O', param);
 	let total = param.rows.length || 0, filtered = $tabEl.find('span.badge').data('filtered') || 0;
 	$tabEl.find('span.badge').remove();
 	$tabEl.append(` <span data-total="${total}" class="badge badge-secondary">${total}</span>`);
@@ -120,14 +118,57 @@ function setupError()
     })
 }
 
+function deleteFn(ev, $modal)
+{
+    let arr = $modal.find('tr[data-id]').get().map(el => parseInt($(el).data('id'))),
+	$tableEl = $modal.data('tableEl');
+    $modal
+	.find('.apply-action')
+	.prop('disabled', true)
+	.append('<span> <div class="spinner-border spinner-border-sm"></div></span>');
+    const doneFn = () => $modal.find('.apply-action').find('span').remove();
+    $.ajax({
+	method: 'DELETE',
+	url: '/event',
+	contentType: 'application/json',
+	data: JSON.stringify(arr),
+	headers: { 'X-CSRFToken': ut.getCookieValue('csrftoken') },
+    }).done(function(resp, status, jqxhr) {
+	$modal.find('div.output').empty().append(resp);
+	$tableEl.bootstrapTable('refresh');
+	doneFn();
+	setTimeout(() => $modal.modal('hide'), 3000);
+    }).fail(function(jqxhr, status) {
+	console.log('fail(%O)', arguments);
+	$modal.find('div.errors')
+	    .empty()
+	    .append(`<div class="text-red-500">${jqxhr.responseText}</div>`);
+	doneFn();
+    })
+}
+
 $(function() {
-    console.log('loaded app.js');
     setupNormal();
     setupError();
 
     $('.delete-btn').click(ev => {
 	let $tableEl = $($(ev.target).closest('div.tab-pane').find('table.table')),
 	    selected = $tableEl.bootstrapTable('getSelections')
-	console.log('selected = %O', selected);
+	fetch('/assets/templates/confirm-user.html')
+	    .then(response => response.text())
+	    .then(async function(page) {
+		const str = ut.renderString(page, {
+		    selected: selected,
+		    question: 'Are you sure you want to <span class="text-red-600">delete</span> the following events?',
+		});
+		ut.doModal({
+		    title: 'Delete Event(s)',
+		    message: str,
+		    okRequired: true,
+		    sizeClass: 'modal-lg',
+		    okText: 'Delete',
+		    okAction: deleteFn,
+		}).then($modal => $modal.data('tableEl', $tableEl));
+	    })
     });
 })
