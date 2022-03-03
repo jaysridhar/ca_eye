@@ -1,0 +1,65 @@
+{%extends "base.html"%}
+
+{%load static%}
+
+{%block css_header%}
+{%if user.is_authenticated%}
+<link rel="stylesheet" href="{%static 'bootstrap-table/bootstrap-table.min.css'%}">
+<link rel="stylesheet" href="{%static 'jQuery-contextMenu/jquery.contextMenu.min.css'%}">
+<link rel="stylesheet" href="{%static 'sweetalert2/sweetalert2.min.css'%}">
+<link rel="stylesheet" href="{%static 'jquery-ui/jquery-ui.min.css'%}">
+<link rel="stylesheet" href="{%static 'jquery-ui/jquery-ui.theme.min.css'%}">
+<link rel="stylesheet" href="{%static 'css/bootstrap-side-modals.css'%}">
+{%else%}
+<link rel="stylesheet" href="{%static 'css/login.css'%}">
+{%endif%}
+<style type="text/css">
+  .dropdown-item {
+      background-color: #C4B5FD;
+      border-bottom: solid 1px #fff;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: #fff;
+  }
+  .dropdown-menu {
+      padding: 0;
+  }
+  .dropdown-item:hover {
+      color: #3ED8B5;
+      background-color: #6D28D9;
+  }
+  label.dropdown-item { margin-bottom: 0 }
+</style>
+{%endblock%}
+
+{%block content%}
+<body>
+<main>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+	<div class="d-flex">
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
+          </ul>
+	</div>
+
+        <div>
+	  {%if user.is_authenticated%}
+	  <span>Logged in as: {{user.email|default:user.username}}</span>
+          <a href="/auth/logout/" class="btn btn-outline-light me-2">Logout</a>
+	  {%endif%}
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    {%if user.is_authenticated%}
+    {%include "content.html"%}
+    {%else%}
+    {%include "login.html"%}
+    {%endif%}
+  </div>
+</main>
+</body>
+{%endblock%}

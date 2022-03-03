@@ -1,0 +1,9 @@
+django==3.2.8
+django-cors-headers
+djangorestframework
+celery
+pyflakes
+mysql-connector
+django-environ
+mysql-connector
+mysqlclient

@@ -1,0 +1,7 @@
+.env
+Makefile
+make.env
+venv
+.color
+.emacs.*
+__pycache__

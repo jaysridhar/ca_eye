@@ -1,0 +1,36 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <h2 class="active">Sign In</h2>
+    <form method="post" action="/auth/login/">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <div class="form-group">
+	<input type="text"
+	       id="login"
+	       class="fadeIn second"
+	       name="username"
+	       autocapitalize="none"
+	       maxlength="150"
+	       class="form-control"
+	       placeholder="username or email"
+	       autofocus required>
+      </div>
+      <div class="form-group">
+	<input type="password"
+	       id="password"
+	       class="fadeIn third"
+	       name="password"
+	       placeholder="password"
+	       required>
+      </div>
+      {%if error%}
+      <div class="my-4 error text-red-500">
+	{{error}}
+      </div>
+      {%endif%}
+      <div class="form-group">
+	<input type="submit" class="fadeIn fourth" value="Log In">
+      </div>
+    </form>
+  </div>
+</div>

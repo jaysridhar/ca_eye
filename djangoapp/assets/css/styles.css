@@ -1,0 +1,8 @@
+.dot {
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.context-menu-list { z-index: 100 !important; }
